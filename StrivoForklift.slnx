@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/StrivoForklift/StrivoForklift.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/StrivoForklift.Tests/StrivoForklift.Tests.csproj" />
+  </Folder>
+</Solution>
