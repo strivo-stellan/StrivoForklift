@@ -25,7 +25,7 @@ public class ForkliftQueueFunction
 
     [Function(nameof(ForkliftQueueFunction))]
     public async Task Run(
-        [QueueTrigger("consumethis", Connection = "StorageConnectionString")] QueueMessage message)
+        [QueueTrigger("consumethis", Connection = "StorageQueue")] QueueMessage message)
     {
         _logger.LogInformation(
             "Processing queue message for Id: {Id}, Timestamp: {Timestamp}",

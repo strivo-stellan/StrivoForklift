@@ -3,9 +3,9 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=consumeddata;AccountKey=REPLACE_WITH_YOUR_STORAGE_ACCOUNT_KEY;EndpointSuffix=core.windows.net"
+    "StorageQueue__serviceUri": "https://consumeddata.queue.core.windows.net"
   },
   "ConnectionStrings": {
-    "SqlConnection": "Data Source=forklift.db"
+    "SqlConnection": "Server=tcp:ingestdemo.database.windows.net,1433;Database=transaction_ingester;Authentication=Active Directory Default;Encrypt=True;TrustServerCertificate=False;"
   }
 }
