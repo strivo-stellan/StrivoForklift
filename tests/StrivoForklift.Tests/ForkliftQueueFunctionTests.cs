@@ -41,7 +41,6 @@ public class ForkliftQueueFunctionTests
         Assert.Equal("forklift-1", stored.Id);
         Assert.Equal(message.Timestamp, stored.Timestamp);
         Assert.Equal("active", stored.Status);
-        Assert.Equal("warehouse-A", stored.Location);
     }
 
     [Fact]
@@ -57,7 +56,6 @@ public class ForkliftQueueFunctionTests
             Id = "forklift-1",
             Timestamp = olderTimestamp,
             Status = "idle",
-            Location = "dock-1",
             LastUpdated = olderTimestamp
         });
         await db.SaveChangesAsync();
@@ -79,7 +77,6 @@ public class ForkliftQueueFunctionTests
         Assert.NotNull(stored);
         Assert.Equal(newerTimestamp, stored.Timestamp);
         Assert.Equal("active", stored.Status);
-        Assert.Equal("warehouse-B", stored.Location);
     }
 
     [Fact]
@@ -95,7 +92,6 @@ public class ForkliftQueueFunctionTests
             Id = "forklift-1",
             Timestamp = currentTimestamp,
             Status = "active",
-            Location = "warehouse-A",
             LastUpdated = currentTimestamp
         });
         await db.SaveChangesAsync();
@@ -117,7 +113,6 @@ public class ForkliftQueueFunctionTests
         Assert.NotNull(stored);
         Assert.Equal(currentTimestamp, stored.Timestamp);
         Assert.Equal("active", stored.Status);
-        Assert.Equal("warehouse-A", stored.Location);
     }
 
     [Fact]
@@ -132,7 +127,6 @@ public class ForkliftQueueFunctionTests
             Id = "forklift-1",
             Timestamp = timestamp,
             Status = "active",
-            Location = "warehouse-A",
             LastUpdated = timestamp
         });
         await db.SaveChangesAsync();
@@ -154,7 +148,6 @@ public class ForkliftQueueFunctionTests
         Assert.NotNull(stored);
         Assert.Equal(timestamp, stored.Timestamp);
         Assert.Equal("active", stored.Status);
-        Assert.Equal("warehouse-A", stored.Location);
     }
 
     [Fact]
@@ -178,7 +171,7 @@ public class ForkliftQueueFunctionTests
         var stored2 = await db.ForkliftEvents.FindAsync("forklift-2");
         Assert.NotNull(stored1);
         Assert.NotNull(stored2);
-        Assert.Equal("zone-A", stored1.Location);
-        Assert.Equal("zone-B", stored2.Location);
+        Assert.Equal("active", stored1.Status);
+        Assert.Equal("idle", stored2.Status);
     }
 }

@@ -3,7 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "StorageConnectionString": "UseDevelopmentStorage=true"
+    "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=consumeddata;AccountKey=REPLACE_WITH_YOUR_STORAGE_ACCOUNT_KEY;EndpointSuffix=core.windows.net"
   },
   "ConnectionStrings": {
     "SqlConnection": "Data Source=forklift.db"

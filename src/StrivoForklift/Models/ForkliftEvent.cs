@@ -16,9 +16,6 @@ public class ForkliftEvent
     /// <summary>Operational status from the most recent event.</summary>
     public string? Status { get; set; }
 
-    /// <summary>Location from the most recent event.</summary>
-    public string? Location { get; set; }
-
     /// <summary>UTC time when this database record was last written.</summary>
     public DateTimeOffset LastUpdated { get; set; }
 }

@@ -5,7 +5,7 @@ Azure Function App that reads forklift events from an Azure Storage Queue and pe
 ## Architecture
 
 ```
-Azure Storage Queue ("forklift-events")
+Azure Storage Queue ("consumethis" – consumeddata.queue.core.windows.net)
         │
         ▼
 ForkliftQueueFunction  (Azure Functions v4 – .NET 8 isolated worker)
@@ -19,14 +19,13 @@ SQLite (local dev) / Azure SQL (production)
 
 ## Queue Message Format
 
-Messages placed on the `forklift-events` queue must be JSON-encoded:
+Messages on the `consumethis` queue are plain UTF-8 text. Azure Storage Queue does not impose a schema — messages can be any string up to 64 KB. When the Azure Functions SDK binds a queue message to a strongly-typed parameter (`QueueMessage`), it automatically deserializes the text as JSON using `System.Text.Json`. Messages must therefore be JSON-encoded with the following shape:
 
 ```json
 {
   "id": "forklift-1",
   "timestamp": "2024-06-01T08:30:00Z",
-  "status": "active",
-  "location": "warehouse-A"
+  "status": "active"
 }
 ```
 
@@ -35,7 +34,8 @@ Messages placed on the `forklift-events` queue must be JSON-encoded:
 | `id`        | string (required)| Unique identifier for the forklift/entity      |
 | `timestamp` | ISO-8601 string  | Event time – used to determine message recency |
 | `status`    | string (optional)| Operational status (e.g. `active`, `idle`)     |
-| `location`  | string (optional)| Current location of the forklift               |
+
+> **Note:** If the queue may contain non-JSON messages, handle the `JsonException` in the function and route invalid messages to the poison queue (Azure Functions does this automatically after 5 failed delivery attempts).
 
 ## Upsert Logic
 
@@ -94,7 +94,7 @@ dotnet test
 
 | Setting                  | Description                                              |
 |--------------------------|----------------------------------------------------------|
-| `StorageConnectionString`| Azure Storage connection string for the queue trigger    |
+| `StorageConnectionString`| Connection string for the `consumeddata` Azure Storage Account that hosts the `consumethis` queue |
 | `ConnectionStrings:SqlConnection` | Database connection string (defaults to SQLite `forklift.db`) |
 
-For production deployment, set `StorageConnectionString` to your Azure Storage Account connection string and `SqlConnection` to your Azure SQL connection string in the Function App's Application Settings.
+For production deployment, set `StorageConnectionString` to the connection string of the `consumeddata` storage account and `SqlConnection` to your Azure SQL connection string in the Function App's Application Settings.

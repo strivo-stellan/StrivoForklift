@@ -7,7 +7,7 @@ using StrivoForklift.Models;
 namespace StrivoForklift;
 
 /// <summary>
-/// Azure Function triggered by messages on the "forklift-events" Azure Storage Queue.
+/// Azure Function triggered by messages on the "consumethis" Azure Storage Queue.
 /// Each message is deserialized as a <see cref="QueueMessage"/> and upserted into the
 /// database: a new record is inserted if none exists for that ID, or the record is
 /// updated only when the incoming message has a more recent timestamp.
@@ -25,7 +25,7 @@ public class ForkliftQueueFunction
 
     [Function(nameof(ForkliftQueueFunction))]
     public async Task Run(
-        [QueueTrigger("forklift-events", Connection = "StorageConnectionString")] QueueMessage message)
+        [QueueTrigger("consumethis", Connection = "StorageConnectionString")] QueueMessage message)
     {
         _logger.LogInformation(
             "Processing queue message for Id: {Id}, Timestamp: {Timestamp}",
@@ -40,7 +40,6 @@ public class ForkliftQueueFunction
                 Id = message.Id,
                 Timestamp = message.Timestamp,
                 Status = message.Status,
-                Location = message.Location,
                 LastUpdated = DateTimeOffset.UtcNow
             });
 
@@ -51,7 +50,6 @@ public class ForkliftQueueFunction
         {
             existing.Timestamp = message.Timestamp;
             existing.Status = message.Status;
-            existing.Location = message.Location;
             existing.LastUpdated = DateTimeOffset.UtcNow;
 
             _logger.LogInformation(
