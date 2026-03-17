@@ -25,7 +25,7 @@ public class HostStartupTests
         return new HostBuilder()
             .ConfigureAppConfiguration(cfg =>
             {
-                cfg.Sources.Clear(); // isolate from ambient env vars / files
+                cfg.Sources.Clear(); // isolate from ambient environment variables / files
                 cfg.AddInMemoryCollection(settings);
             })
             .ConfigureServices((context, services) =>
@@ -56,8 +56,11 @@ public class HostStartupTests
     [Fact]
     public void Build_PresentStorageQueueServiceUri_DoesNotThrow()
     {
-        // When the setting is present the host should build without error.
+        // When the setting is present the host should build without error,
+        // and the configuration value should be accessible to binding resolution.
         using var host = BuildWithValidation(includeStorageQueueUri: true).Build();
         Assert.NotNull(host);
+        var config = host.Services.GetRequiredService<IConfiguration>();
+        Assert.Equal("https://consumeddata.queue.core.windows.net", config["StorageQueue__serviceUri"]);
     }
 }
