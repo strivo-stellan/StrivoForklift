@@ -197,4 +197,4 @@ ALTER ROLE db_datawriter ADD MEMBER [<username>];
 | SQL Server (EF Core) | `transaction_ingester` on `ingestdemo` | SQL auth — credentials from Key Vault |
 | Application Insights | Monitoring resource | Connection string key (non-secret) via `APPLICATIONINSIGHTS_CONNECTION_STRING` |
 
-Releasa igen
+Releasa igen, o igen
